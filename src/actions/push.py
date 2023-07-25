@@ -32,7 +32,7 @@ class PushAction:
 		return self.gitlab_conn.get_file_raw_content
 
 	def save_to_local(self):
-		read_local_pipeline_file = check_file(self.config.client_info.module.pipeline)
+		read_local_pipeline_file = check_file(self.config.client_info.module.pipeline_save)
 		if read_local_pipeline_file:
 			fmt_module_content = find_list_difference(read_local_pipeline_file, self.module_read)
 		else:
