@@ -1,5 +1,7 @@
 client_info:
   base_url: python
+  module:
+    path: "/mnt/pypi"
   webhooks:
     # url: 0.0.0.0:8000/python/pypi
     url_suffix: "pypi"
@@ -17,5 +19,9 @@ client_info:
     host: "0.0.0.0"
     port: 8002
 
-module:
-  path: "/mnt/pypi"
+  gitlab:
+    url: "http://10.2.12.84:8000"
+    # BSyK4ZVZzDK47_MeeFYs
+    sk: "QlN5SzRaVlp6REs0N19NZWVGWXM="
+    timeout: 60
+    parse_filename: "requirements.txt"

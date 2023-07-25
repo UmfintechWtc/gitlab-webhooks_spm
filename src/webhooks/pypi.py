@@ -1,14 +1,14 @@
-from flask import Flask
+from flask import Flask, request
 
-from src.config.internal_config import *
+import event
+from src.config.internal_config import InternalConfig
 
 app_pypi = Flask(__name__)
 
 config = InternalConfig()
 
 
-@app_pypi.route(f"/{config.client_info.base_url}/{config.client_info.webhooks.url_suffix}", methods=['GET'])
+@app_pypi.route(f"/{config.client_info.base_url}/{config.client_info.webhooks.url_suffix}", methods=['POST'])
 def pypi():
-	print(f"/{config.client_info.base_url}/{config.client_info.webhooks.url_suffix}")
-	return "pypi", 200
-
+	webhooks_handler_result = event.event_type(request.data)
+	return webhooks_handler_result, 200

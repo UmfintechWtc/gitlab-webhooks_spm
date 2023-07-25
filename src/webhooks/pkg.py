@@ -1,6 +1,6 @@
 from flask import Flask
 
-from src.config.internal_config import *
+from src.config.internal_config import InternalConfig
 
 app_pkg = Flask(__name__)
 
