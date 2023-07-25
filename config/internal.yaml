@@ -1,7 +1,7 @@
 client_info:
   base_url: python
   module:
-    path: "/mnt/pypi"
+    package_path: "/mnt/pypi"
     pipeline_save: "pipeline"
   webhooks:
     # url: 0.0.0.0:8000/python/pypi
@@ -26,3 +26,6 @@ client_info:
     sk: "QlN5SzRaVlp6REs0N19NZWVGWXM="
     timeout: 60
     parse_filename: "requirements.txt"
+
+performance:
+  max_workers: 5

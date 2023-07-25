@@ -21,7 +21,7 @@ def print_colored(text, color):
     print(colored_text)
 
 
-def eWHc_cmd(cmd):
+def exec_cmd(cmd):
     # cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     cmd_result_stderr = ""
@@ -40,11 +40,6 @@ def eWHc_cmd(cmd):
             break
         if stderr:
             cmd_result_stderr += stderr.decode('utf-8')
-
-    if len(cmd_result_stderr) == 0:
-        return
-    else:
-        return cmd_result_stderr
 
 
 def create_dir(dir_name):
@@ -67,6 +62,10 @@ def find_list_difference(args1: list, args2: list):
     if '' in difference:
         difference.remove('')
     return list(difference)
+
+def write_content_to_file(content, filepath):
+    with open(filepath, "a", encoding="utf8" ) as f:
+        f.write(content)
 
 class Dict2Obj(object):
     """字典转对象"""
