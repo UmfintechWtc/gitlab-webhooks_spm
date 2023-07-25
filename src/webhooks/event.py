@@ -5,7 +5,8 @@ from src.common.utility import *
 
 def event_type(data):
 	request_data = json.loads(request.data)
-
+	print (request_data)
+	print (type(request_data))
 	if request_data.get("object_kind"):
 		if request_data['object_kind'] == 'push':
 			request_data_fmt = Dict2Obj(request_data)
