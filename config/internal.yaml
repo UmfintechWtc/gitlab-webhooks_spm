@@ -2,6 +2,7 @@ client_info:
   base_url: python
   module:
     path: "/mnt/pypi"
+    pipeline_save: "pipeline"
   webhooks:
     # url: 0.0.0.0:8000/python/pypi
     url_suffix: "pypi"

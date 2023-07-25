@@ -1,4 +1,7 @@
+import os
+import re
 import subprocess
+
 
 def print_colored(text, color):
     colors = {
@@ -16,6 +19,7 @@ def print_colored(text, color):
 
     colored_text = colors[color] + text + colors["reset"]
     print(colored_text)
+
 
 def eWHc_cmd(cmd):
     # cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -41,6 +45,28 @@ def eWHc_cmd(cmd):
         return
     else:
         return cmd_result_stderr
+
+
+def create_dir(dir_name):
+    if os.path.exists(dir_name):
+        pass
+    else:
+        os.makedirs(dir_name)
+
+
+def check_file(filename):
+    if os.path.exists(filename):
+        with open(filename, "r", encoding="utf8") as f:
+            return re.sub('\n{2,}', '\n', f.read()).split("\n")
+    else:
+        return False
+
+
+def find_list_difference(args1: list, args2: list):
+    difference = set(args1).symmetric_difference(set(args2))
+    if '' in difference:
+        difference.remove('')
+    return list(difference)
 
 class Dict2Obj(object):
     """字典转对象"""

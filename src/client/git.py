@@ -5,11 +5,11 @@ from src.config.internal_config import InternalConfig
 
 
 class GitlabApi(object):
-	def __init__(self, url, ak, project_id, file_path=None, branch="master", timeout=60):
+	def __init__(self, url: str, sk: str, project_id: str, file_path: str, branch="master", timeout=60):
 		self.id = project_id
 		self.branch = branch
 		self.url = url
-		self.token = base64.b64decode(ak.encode("utf-8")).decode("utf-8")
+		self.token = base64.b64decode(sk.encode("utf-8")).decode("utf-8")
 		self.timeout = timeout
 		self.file_path = file_path
 		self.config = self.internal_config
@@ -20,19 +20,16 @@ class GitlabApi(object):
 	def internal_config(self):
 		return InternalConfig()
 
-	@property
-	def check_file_path(self):
-		if self.file_path is None:
-			return self.config.client_info.gitlab.parse_filename
-		else:
-			return self.file_path
-
 	def check_dir_exists(self, check_path, check_branch):
 		pass
 
+	@property
 	def get_file_raw_content(self):
-		content = self.projects.files.get(file_path=f'{self.check_file_path}', ref=self.branch)
-		return content
+		"""
+		:return: module list
+		"""
+		content = self.projects.files.get(file_path=f'{self.file_path}', ref=self.branch)
+		return content.decode().decode("utf8").split("\n")
 
 	def pull(self, project_url, project_branch, project_save_path):
 		pass

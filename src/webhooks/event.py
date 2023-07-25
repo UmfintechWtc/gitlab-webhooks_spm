@@ -2,20 +2,18 @@ import json
 
 from flask import request
 from src.common.utility import *
+from src.actions.push import *
+
 
 def event_type(data):
-	request_data = json.loads(request.data)
-	print (request_data)
-	print (type(request_data))
+	request_data = Dict2Obj(json.loads(request.data))
 	if request_data.get("object_kind"):
 		if request_data['object_kind'] == 'push':
-			request_data_fmt = Dict2Obj(request_data)
-			print (request_data_fmt.tag)
-			print(request_data_fmt.repository.git_http_url)
-			print(request_data_fmt.repository.git_ssh_url)
+			handler_res = PushAction(request_data.project.id, request_data.project.default_branch).save_to_local()
+			return handler_res, 200
 		elif request_data['object_kind'] == 'merge_request':
-			print('Merge request event received')
+			return 'merge_request event received', 200
 		else:
-			return 'Unknown event received'
+			return 'Unknown event received', 500
 	else:
 		return f'object_kind key is no exists with {request_data}'
