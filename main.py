@@ -1,26 +1,10 @@
-import json
-
-from flask import Flask
-from src.config.internal_config import *
-from src.webhooks.event import *
-
-app = Flask(__name__)
-
-config = InternalConfig()
-
-# @app.route('/pypi', methods=['POST'])
-# def gitlab_webhook():
-# 	request_data = json.loads(request.data)
-# 	rsp_data = event_type(request_data)
-# 	return 'OK', 200
-
-# @app.route(f"/{config.client_info.base_url}/{config.client_info.webhooks.url_suffix}", methods=['GET'])
-
-@app.route(f"/{config.client_info.base_url}/{config.client_info.webhooks.url_suffix}", methods=['GET'])
-def parse_config():
-	res = InternalConfig()
-	print (res)
-	return "ok", 200
+from src.webhooks.config import app_config
+from src.webhooks.pkg import app_pkg
+from src.webhooks.pypi import app_pypi
+from src.config.internal_config import InternalConfig
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=8000)
+	config = InternalConfig()
+	app_config.run(host=f"{config.client_info.config.host}", port=int(f"{config.client_info.config.port}"))
+	app_pkg.run(host=f"{config.client_info.repo.host}", port=int(f"{config.client_info.repo.port}"))
+	app_pypi.run(host=f"{config.client_info.webhooks.host}", port=int(f"{config.client_info.webhooks.port}"))
