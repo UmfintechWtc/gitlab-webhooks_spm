@@ -1,24 +1,22 @@
 import json
-from flask import Flask, request
+
+from flask import Flask
+from src.config.internal_config import *
+from src.webhooks.event import *
 
 app = Flask(__name__)
 
-@app.route('/pypi', methods=['POST'])
-def gitlab_webhook():
-    request_data = json.loads(request.data)
-    if 'object_kind' in data and data['object_kind'] == 'push':
-        # Handle push event
-        print('Push event received')
-        # TODO: Add your code to handle push event here
-    elif 'object_kind' in data and data['object_kind'] == 'merge_request':
-        # Handle merge request event
-        print('Merge request event received')
-        # TODO: Add your code to handle merge request event here
-    else:
-        # Handle other events
-        print('Unknown event received')
-        # TODO: Add your code to handle other events here
-    return 'OK', 200
+
+# @app.route('/pypi', methods=['POST'])
+# def gitlab_webhook():
+# 	request_data = json.loads(request.data)
+# 	rsp_data = event_type(request_data)
+# 	return 'OK', 200
+
+@app.route('/pypi', methods=['GET'])
+def parse_config():
+	res = InternalConfig()
+	print (res)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+	app.run(host='0.0.0.0', port=8000)
