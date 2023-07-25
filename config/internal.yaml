@@ -1,11 +1,21 @@
 client_info:
-  wehhooks:
+  base_url: python
+  webhooks:
+    # url: 0.0.0.0:8000/python/pypi
+    url_suffix: "pypi"
     host: "0.0.0.0"
     port: 8000
 
   repo:
+    # url: 0.0.0.0:8001/python/pkg
+    url_suffix: "pkg"
     host: "0.0.0.0"
     port: 8001
+
+  config:
+    url_suffix: "config"
+    host: "0.0.0.0"
+    port: 8002
 
 module:
   path: "/mnt/pypi"
