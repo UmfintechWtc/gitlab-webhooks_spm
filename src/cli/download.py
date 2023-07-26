@@ -1,5 +1,4 @@
 import concurrent.futures
-import sys
 import traceback
 
 from src.common.exception import *
@@ -8,6 +7,7 @@ from src.common.utility import *
 from src.config.internal_config import InternalConfig
 
 xlogger = get_logger()
+
 
 class DownloadModule:
 	def __init__(self, packages):
@@ -22,12 +22,13 @@ class DownloadModule:
 		download_pip_pkg_cmd = f"mppm download -m {package} -o {self.config.client_info.module.package_path}"
 		cmd_result = exec_cmd(download_pip_pkg_cmd)
 		if cmd_result is None:
-			return f'{package} download success'
+			return xlogger.info(f'{package} download success')
 		else:
-			return f'{package} download failed'
+			return xlogger.error(f'{package} download failed, cli: f{download_pip_pkg_cmd}')
 
 	def install_packages(self):
-		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers, thread_name_prefix="module") as executor:
+		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers,
+												   thread_name_prefix="module") as executor:
 			futures = [executor.submit(self.install_package_cmd, package) for package in self.module]
 			for task in concurrent.futures.as_completed(futures):
 				try:
