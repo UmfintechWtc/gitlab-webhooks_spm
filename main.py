@@ -1,5 +1,5 @@
 import concurrent.futures
-
+from src.config.internal_config import InternalConfig
 from src.cli.repo import *
 from src.webhooks.config import app_config
 from src.webhooks.pkg import app_pkg

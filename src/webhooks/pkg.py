@@ -13,7 +13,7 @@ config = InternalConfig()
 
 xlogger = get_logger()
 
-RepoInit().update_index()
+RepoInit().update_index(config)
 
 
 @app_pkg.route('/simple/')
