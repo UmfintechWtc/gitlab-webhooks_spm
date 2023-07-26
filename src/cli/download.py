@@ -20,11 +20,7 @@ class DownloadModule:
 
     def install_package_cmd(self, package):
         download_pip_pkg_cmd = f"mppm download -m {package} -o {self.config.client_info.module.package_path}"
-        return exec_cmd(download_pip_pkg_cmd)
-        # if self.config.client_info.ignore_black_key_words.mppm in cmd_result:
-        # 	return f'{package} download failed[{download_pip_pkg_cmd}], exception: \n{cmd_result}'
-        # else:
-        # 	return f'{package} download success'
+        return exec_cmd(download_pip_pkg_cmd), package
 
     def install_packages(self):
         failed_module = []
@@ -34,8 +30,9 @@ class DownloadModule:
             for task in concurrent.futures.as_completed(futures):
                 try:
                     result =  task.result()
-                    if self.config.client_info.ignore_black_key_words.mppm in result:
-                        failed_module.append(result.split()[0])
+                    print (result)
+                    # if self.config.client_info.ignore_black_key_words.mppm in result:
+                    #     print (result)
                 except Exception as e:
                      xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
         if failed_module:
