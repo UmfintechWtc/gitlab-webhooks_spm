@@ -1,6 +1,6 @@
 import concurrent.futures
 import traceback
-
+import sys
 from src.common.exception import *
 from src.common.log4py import *
 from src.common.utility import *
@@ -24,7 +24,8 @@ class DownloadModule:
 		if cmd_result is None:
 			return xlogger.info(f'{package} download success')
 		else:
-			return xlogger.error(f'{package} download failed, cli: f{download_pip_pkg_cmd}, exception: {cmd_result}')
+			xlogger.error(f'{package} download failed[{download_pip_pkg_cmd}], exception: \n{cmd_result}')
+			sys.exit(WH_DOWNLOAD_ERROR)
 
 	def install_packages(self):
 		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers,
