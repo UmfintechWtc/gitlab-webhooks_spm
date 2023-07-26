@@ -8,6 +8,7 @@ WH_READ_ERROR = 'WH-00005'
 WH_WRITE_ERROR = 'WH-00006'
 WH_SHELL_ERROR = 'WH-00007'
 WH_SIMPLE_INDEX = 'WH-00008'
+WH_INDEX_UPDATE = 'WH-00009'
 
 _exception_definition = {
 	WH_UNEXPECTED_ERROR: '未知异常',
@@ -18,7 +19,8 @@ _exception_definition = {
 	WH_READ_ERROR: '读文件异常',
 	WH_WRITE_ERROR: '写文件异常',
 	WH_SHELL_ERROR: '执行SHELL CLI异常',
-	WH_SIMPLE_INDEX: 'pypi仓库索引文件不存在'
+	WH_SIMPLE_INDEX: 'pypi仓库索引文件不存在',
+	WH_INDEX_UPDATE: 'pypi仓库索引更新异常'
 
 }
 
