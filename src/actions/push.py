@@ -1,9 +1,7 @@
-import sys
-import traceback
 from src.cli.download import *
 from src.client.git import *
-from src.common.log4py import *
 from src.common.exception import *
+from src.common.log4py import *
 
 xlogger = get_logger()
 
@@ -53,13 +51,14 @@ class PushAction:
 		if len(fmt_module_content) == 0:
 			return "No modules need to download"
 		else:
-			download_result = DownloadModule(fmt_module_content).install_packages()
+			err_module, ok_module = DownloadModule(fmt_module_content).install_packages()
 
-		if download_result is None:
+		if len(err_module) == 0:
 			try:
-				write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
-				return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'
+				write_content_to_file("\n".join(ok_module),
+									  f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
+				return f'{ok_module} Download Successfuly.'
 			except Exception as e:
-				return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
+				xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
 		else:
-			return download_result
+			return f'{err_module} Download Failed.'

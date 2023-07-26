@@ -1,6 +1,7 @@
 import concurrent.futures
 import traceback
 import sys
+import copy
 from src.common.exception import *
 from src.common.log4py import *
 from src.common.utility import *
@@ -30,11 +31,10 @@ class DownloadModule:
             for task in concurrent.futures.as_completed(futures):
                 try:
                     result =  task.result()
-                    if self.config.client_info.ignore_black_key_words.mppm in result:
+                    if self.config.client_info.ignore_black_key_words.mppm in result[0]:
                         failed_module.append(result[1])
                 except Exception as e:
                      xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
-        if failed_module:
-            return ", ".join(failed_module)
-        else:
-            return
+        for err_module in failed_module:
+            self.module.remove(err_module)
+        return failed_module, self.module
