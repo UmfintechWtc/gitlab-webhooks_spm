@@ -44,6 +44,7 @@ def exec_cmd(cmd):
     if len(cmd_result_stderr) == 0:
         return
     else:
+        print (cmd_result_stderr,"cmd_result_stderr")
         return cmd_result_stderr
 
 def create_dir(dir_name):
