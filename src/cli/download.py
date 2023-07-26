@@ -32,6 +32,7 @@ class DownloadModule:
 			futures = [executor.submit(self.install_package_cmd, package) for package in self.module]
 			for task in concurrent.futures.as_completed(futures):
 				try:
+					print (task.result())
 					return task.result()
 				except Exception as e:
 					return xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
