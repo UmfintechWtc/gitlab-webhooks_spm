@@ -55,6 +55,6 @@ class PushAction:
 		DownloadModule(fmt_module_content).install_packages()
 		try:
 			write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
+			return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'
 		except Exception as e:
-			xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
-			sys.exit(WH_WRITE_ERROR)
+			return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
