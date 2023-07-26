@@ -72,5 +72,5 @@ class PushAction:
 				except Exception as e:
 					xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
 			else:
-				xlogger.error(f'module download Failed. {err_module}')
+				xlogger.error(f'module download Failed. {err_module} -> {str(WebHooksException(WH_WRITE_ERROR, {str(traceback.format_exc())}))}')
 				return f'download Failed. {err_module}\n'
