@@ -30,8 +30,7 @@ class PushAction:
 		try:
 			return GitlabApi(**git_login_info)
 		except Exception as e:
-			xlogger.error(str(WebHooksException(WH_GITLAB_ERROR, f'{str(traceback.format_exc())}')))
-			sys.exit(WH_GITLAB_ERROR)
+			return xlogger.error(str(WebHooksException(WH_GITLAB_ERROR, f'{str(traceback.format_exc())}'))), 500
 
 	@property
 	def module_read(self):
@@ -41,8 +40,7 @@ class PushAction:
 		try:
 			return self.gitlab_conn.get_file_raw_content
 		except Exception as e:
-			xlogger.error(str(WebHooksException(WH_READ_ERROR, f'{str(traceback.format_exc())}')))
-			sys.exit(WH_READ_ERROR)
+			return xlogger.error(str(WebHooksException(WH_READ_ERROR, f'{str(traceback.format_exc())}'))), 500
 
 	def save_to_local(self):
 		read_local_pipeline_file = check_file(
@@ -53,11 +51,11 @@ class PushAction:
 			fmt_module_content = self.module_read
 
 		if len(fmt_module_content) == 0:
-			return "No modules need to download"
+			return "No modules need to download", 200
 		else:
 			DownloadModule(fmt_module_content).install_packages()
 		try:
 			write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
-			return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'
+			return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.', 200
 		except Exception as e:
-			return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
+			return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}'))), 500
