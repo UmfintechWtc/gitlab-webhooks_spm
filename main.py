@@ -10,7 +10,7 @@ if __name__ == '__main__':
 	config = InternalConfig()
 	create_dir(config.client_info.module.pipeline_save)
 	create_dir(config.client_info.module.package_path)
-	RepoInit().update_index()
+	# RepoInit().update_index()
 	with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
 		pool.submit(app_config.run, host=config.client_info.config.host, port=int(config.client_info.config.port))
 		pool.submit(app_pkg.run, host=config.client_info.repo.host, port=int(config.client_info.repo.port))
