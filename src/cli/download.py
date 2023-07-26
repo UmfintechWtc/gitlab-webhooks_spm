@@ -30,9 +30,8 @@ class DownloadModule:
             for task in concurrent.futures.as_completed(futures):
                 try:
                     result =  task.result()
-                    print (result)
-                    # if self.config.client_info.ignore_black_key_words.mppm in result:
-                    #     print (result)
+                    if self.config.client_info.ignore_black_key_words.mppm in result:
+                        failed_module.append(result[1])
                 except Exception as e:
                      xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
         if failed_module:
