@@ -53,7 +53,8 @@ class PushAction:
 		if len(fmt_module_content) == 0:
 			return "No modules need to download"
 		else:
-			DownloadModule(fmt_module_content).install_packages()
+			download_result = DownloadModule(fmt_module_content).install_packages()
+		print (download_result)
 		try:
 			write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
 			return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'

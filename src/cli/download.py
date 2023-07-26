@@ -24,8 +24,7 @@ class DownloadModule:
 		if cmd_result is None:
 			return xlogger.info(f'{package} download success')
 		else:
-			xlogger.error(f'{package} download failed[{download_pip_pkg_cmd}], exception: \n{cmd_result}')
-			sys.exit(WH_DOWNLOAD_ERROR)
+			return xlogger.error(f'{package} download failed[{download_pip_pkg_cmd}], exception: \n{cmd_result}')
 
 	def install_packages(self):
 		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers,
@@ -33,6 +32,6 @@ class DownloadModule:
 			futures = [executor.submit(self.install_package_cmd, package) for package in self.module]
 			for task in concurrent.futures.as_completed(futures):
 				try:
-					task.result()
+					return task.result()
 				except Exception as e:
 					return xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
