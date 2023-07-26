@@ -10,6 +10,6 @@ class RepoInit:
 		return InternalConfig
 
 	def update_index(self):
-		pypi_save_path = self.config.client_info.module.package_path
-		update_index_cmd = f"dir2pi {pypi_save_path}"
+		# pypi_save_path = self.config.client_info.module.package_path
+		update_index_cmd = f"dir2pi /mnt/pypi"
 		exec_cmd(update_index_cmd)
