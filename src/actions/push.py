@@ -57,8 +57,8 @@ class PushAction:
 			try:
 				write_content_to_file("\n".join(ok_module),
 									  f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
-				xlogger.info(f'module {ok_module} Download Successfuly.')
-				return f'{ok_module} Download Successfuly.' + "\n"
+				xlogger.info(f'module {ok_module} Download successfully.')
+				return f'{ok_module} Download successfully.' + "\n"
 			except Exception as e:
 				xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
 		elif len(err_module) > 0:
@@ -66,10 +66,11 @@ class PushAction:
 				try:
 					write_content_to_file("\n".join(ok_module),
 										  f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
-					xlogger.info(f'module {ok_module} Download Successfuly.')
-					return f'{ok_module} Download Successfuly.' + "\n"
+					xlogger.info(f'module download successfully. {ok_module}')
+					xlogger.info(f'module download failed. {err_module}')
+					return f'download successfully. {ok_module}\ndownload failed. {err_module}'
 				except Exception as e:
 					xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
 			else:
-				xlogger.error(f'module {err_module} Download Failed.')
-				return f'{err_module} Download Failed.' + "\n"
+				xlogger.error(f'module download Failed. {err_module}')
+				return f'download Failed. {err_module}\n'
