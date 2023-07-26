@@ -22,7 +22,7 @@ def print_colored(text, color):
 
 
 def exec_cmd(cmd):
-	cmd_result = subprocess.run(cmd, shell=True, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+	cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 	return cmd_result.stdout.decode("utf8")
 
 def create_dir(dir_name):

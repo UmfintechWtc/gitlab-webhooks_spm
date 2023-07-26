@@ -49,6 +49,7 @@ class PushAction:
 			fmt_module_content = self.module_read
 
 		if len(fmt_module_content) == 0:
+			xlogger.info("No modules need to download")
 			return "No modules need to download\n"
 		else:
 			err_module, ok_module = DownloadModule(fmt_module_content).install_packages()
