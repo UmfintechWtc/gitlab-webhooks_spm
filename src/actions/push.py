@@ -68,7 +68,7 @@ class PushAction:
 										  f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
 					xlogger.info(f'module download successfully. {ok_module}')
 					xlogger.info(f'module download failed. {err_module}')
-					return f'download successfully. {ok_module}\ndownload failed. {err_module}'
+					return f'download successfully. {ok_module}\ndownload failed. {err_module}\n'
 				except Exception as e:
 					xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
 			else:
