@@ -70,7 +70,7 @@ def find_list_difference(args1: list, args2: list):
 
 def write_content_to_file(content, filepath):
     with open(filepath, "a", encoding="utf8" ) as f:
-        f.write(content)
+        f.write(content + "\n")
 
 class Dict2Obj(object):
     """字典转对象"""
