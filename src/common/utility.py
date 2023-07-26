@@ -41,10 +41,10 @@ def check_file(filename):
 
 
 def find_list_difference(args1: list, args2: list):
-	difference = set(args1).symmetric_difference(set(args2))
-	if '' in difference:
-		difference.remove('')
-	return list(difference)
+	missing_elements = list(set(args2) - set(args1))
+	if '' in missing_elements:
+		missing_elements.remove('')
+	return list(missing_elements)
 
 
 def write_content_to_file(content, filepath):
