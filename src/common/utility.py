@@ -21,12 +21,9 @@ def print_colored(text, color):
 	print(colored_text)
 
 
-def exec_cmd(black_key_words, cmd):
+def exec_cmd(cmd):
 	cmd_result = subprocess.run(cmd, shell=True, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-	if black_key_words in cmd_result.stdout.decode("utf8"):
-		return cmd_result.stdout.decode("utf8")
-	else:
-		return
+	return cmd_result.stdout.decode("utf8")
 
 def create_dir(dir_name):
 	if os.path.exists(dir_name):

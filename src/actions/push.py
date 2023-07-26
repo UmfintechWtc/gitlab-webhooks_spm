@@ -54,9 +54,12 @@ class PushAction:
 			return "No modules need to download"
 		else:
 			download_result = DownloadModule(fmt_module_content).install_packages()
-		print (download_result, "dhownload_result")
-		try:
-			write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
-			return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'
-		except Exception as e:
-			return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
+
+		if download_result is None:
+			try:
+				write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
+				return f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename} Update Successful.'
+			except Exception as e:
+				return xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
+		else:
+			return download_result
