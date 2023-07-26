@@ -7,7 +7,6 @@ app_pkg = Flask(__name__)
 config = InternalConfig()
 
 
-@app_pkg.route(f"/{config.client_info.base_url}/{config.client_info.repo.url_suffix}", methods=['GET'])
+@app_pkg.route("/mnt/pypi", methods=['GET'])
 def pkg():
-	RepoInit().update_index()
 	return "pkg", 200
