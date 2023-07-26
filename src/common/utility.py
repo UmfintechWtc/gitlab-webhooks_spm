@@ -41,6 +41,10 @@ def exec_cmd(cmd):
         if stderr:
             cmd_result_stderr += stderr.decode('utf-8')
 
+    if len(cmd_result_stderr) == 0:
+        return
+    else:
+        return cmd_result_stderr
 
 def create_dir(dir_name):
     if os.path.exists(dir_name):

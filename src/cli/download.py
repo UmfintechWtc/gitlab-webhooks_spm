@@ -19,8 +19,12 @@ class DownloadModule:
 		return InternalConfig()
 
 	def install_package_cmd(self, package):
-		download_pip_pkg_cmd = f"mppm download -m {package} -d {self.config.client_info.module.package_path}"
-		exec_cmd(download_pip_pkg_cmd)
+		download_pip_pkg_cmd = f"mppm download -m {package} -o {self.config.client_info.module.package_path}"
+		cmd_result = exec_cmd(download_pip_pkg_cmd)
+		if cmd_result is None:
+			return f'{package} download success'
+		else:
+			return f'{package} download failed'
 
 	def install_packages(self):
 		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers, thread_name_prefix="module") as executor:
