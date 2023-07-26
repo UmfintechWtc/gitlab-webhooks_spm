@@ -29,5 +29,4 @@ class DownloadModule:
 				try:
 					task.result()
 				except Exception as e:
-					xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
-					sys.exit(WH_SHELL_ERROR)
+					return xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
