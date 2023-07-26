@@ -24,7 +24,7 @@ class DownloadModule:
 		if cmd_result is None:
 			return xlogger.info(f'{package} download success')
 		else:
-			return xlogger.error(f'{package} download failed, cli: f{download_pip_pkg_cmd}')
+			return xlogger.error(f'{package} download failed, cli: f{download_pip_pkg_cmd}, exception: {cmd_result}')
 
 	def install_packages(self):
 		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers,

@@ -27,5 +27,8 @@ client_info:
     timeout: 60
     parse_filename: "requirements.txt"
 
+  ignore_black_key_words:
+    mppm: "ERROR"
+
 performance:
   max_workers: 5
