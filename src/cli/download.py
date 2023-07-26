@@ -1,9 +1,13 @@
 import concurrent.futures
+import sys
+import traceback
 
+from src.common.exception import *
+from src.common.log4py import *
 from src.common.utility import *
-
 from src.config.internal_config import InternalConfig
 
+xlogger = get_logger()
 
 class DownloadModule:
 	def __init__(self, packages):
@@ -19,10 +23,11 @@ class DownloadModule:
 		exec_cmd(download_pip_pkg_cmd)
 
 	def install_packages(self):
-		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers) as executor:
+		with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.performance.max_workers, thread_name_prefix="module") as executor:
 			futures = [executor.submit(self.install_package_cmd, package) for package in self.module]
 			for task in concurrent.futures.as_completed(futures):
 				try:
 					task.result()
 				except Exception as e:
-					print(f'An error occurred: {e}')
+					xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
+					sys.exit(WH_SHELL_ERROR)

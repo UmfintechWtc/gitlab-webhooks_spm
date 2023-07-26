@@ -1,5 +1,11 @@
+import sys
+import traceback
 from src.cli.download import *
 from src.client.git import *
+from src.common.log4py import *
+from src.common.exception import *
+
+xlogger = get_logger()
 
 
 class PushAction:
@@ -21,14 +27,22 @@ class PushAction:
 			"branch": self.branch,
 			"file_path": self.config.client_info.gitlab.parse_filename
 		}
-		return GitlabApi(**git_login_info)
+		try:
+			return GitlabApi(**git_login_info)
+		except Exception as e:
+			xlogger.error(str(WebHooksException(WH_GITLAB_ERROR, f'{str(traceback.format_exc())}')))
+			sys.exit(WH_GITLAB_ERROR)
 
 	@property
 	def module_read(self):
 		"""
 		:return: list
 		"""
-		return self.gitlab_conn.get_file_raw_content
+		try:
+			return self.gitlab_conn.get_file_raw_content
+		except Exception as e:
+			xlogger.error(str(WebHooksException(WH_READ_ERROR, f'{str(traceback.format_exc())}')))
+			sys.exit(WH_READ_ERROR)
 
 	def save_to_local(self):
 		read_local_pipeline_file = check_file(
@@ -39,4 +53,8 @@ class PushAction:
 			fmt_module_content = self.module_read
 
 		DownloadModule(fmt_module_content).install_packages()
-		write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
+		try:
+			write_content_to_file("\n".join(fmt_module_content), f'{self.config.client_info.module.pipeline_save}/{self.config.client_info.gitlab.parse_filename}')
+		except Exception as e:
+			xlogger.error(str(WebHooksException(WH_WRITE_ERROR, f'{str(traceback.format_exc())}')))
+			sys.exit(WH_WRITE_ERROR)
