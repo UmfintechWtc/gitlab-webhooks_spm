@@ -1,58 +1,45 @@
-# app.py
+import traceback
 
-import os
-from flask import Flask, request, send_file
+from flask import Flask, send_from_directory
+
+from src.cli.repo import *
+from src.common.exception import *
+from src.common.log4py import *
+from src.config.internal_config import InternalConfig
 
 app_pkg = Flask(__name__)
 
-# Directory where you want to store uploaded packages
-UPLOAD_DIRECTORY = "/mnt/pypi"
+config = InternalConfig()
 
-@app_pkg.route("/simple/<package_name>/")
-def simple_index(package_name):
-    # Replace this with your own logic to fetch package information from the repository
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>{package_name}</title>
-    </head>
-    <body>
-        <h1>{package_name}</h1>
-    </body>
-    </html>
-    """
+xlogger = get_logger()
 
-@app_pkg.route("/simple/<package_name>/<version>/")
-def simple_detail(package_name, version):
-    # Replace this with your own logic to fetch package information from the repository
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>{package_name} {version}</title>
-    </head>
-    <body>
-        <h1>{package_name} {version}</h1>
-    </body>
-    </html>
-    """
 
-@app_pkg.route("/simple/")
-def simple():
-    # Replace this with your own logic to list available packages from the repository
-    return "List of available packages"
+@app_pkg.route('/simple/')
+def simple_index():
+    simple_index_path = f'{config.client_info.module.package_path}/simple/'
+    try:
+        return send_from_directory(f'{simple_index_path}', f'{config.client_info.module.simple_index_name}')
+    except Exception as e:
+        xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{str(traceback.format_exc())}')))
+        return f'{simple_index_path} Page not found', 404
 
-@app_pkg.route("/simple/upload/", methods=["POST"])
-def upload_package():
-    # Handle package upload and save it to the upload directory
-    package = request.files.get("package")
-    if package:
-        package.save(os.path.join(UPLOAD_DIRECTORY, package.filename))
-        return "Package uploaded successfully."
-    return "Package upload failed.", 400
 
-@app_pkg.route("/<path:filename>")
-def download_package(filename):
-    # Serve package files for download
-    return send_file(os.path.join(UPLOAD_DIRECTORY, filename), as_attachment=True)
+@app_pkg.route('/simple/<package_name>/')
+def simple_package_index(package_name):
+    package_index_file = f'{config.client_info.module.package_path}/simple/{package_name}'
+    try:
+        return send_from_directory(package_index_file, f'{config.client_info.module.simple_index_name}')
+    except Exception as e:
+        xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{str(traceback.format_exc())}')))
+        return f'{package_index_file}/{config.client_info.module.simple_index_name} Page not found', 404
+
+
+@app_pkg.route('/simple/<package_name>/<filename>')
+def download_file(package_name, filename):
+    package_directory = f'{config.client_info.module.package_path}/simple/{package_name}'
+    try:
+        return send_from_directory(package_directory, filename, as_attachment=True)
+    except Exception as e:
+        xlogger.error(str(WebHooksException(WH_DOWNLOAD_ERROR, f'{str(traceback.format_exc())}')))
+        return f'{package_directory}/{filename} module not found', 404
+

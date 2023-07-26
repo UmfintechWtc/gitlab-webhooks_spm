@@ -2,6 +2,7 @@ client_info:
   base_url: python
   module:
     package_path: "/mnt/pypi"
+    simple_index_name: "index.html"
     pipeline_save: "pipeline"
   webhooks:
     # url: 0.0.0.0:8000/python/pypi
@@ -10,8 +11,7 @@ client_info:
     port: 8000
 
   repo:
-    # url: 0.0.0.0:8001/python/pkg
-    url_suffix: "pkg"
+    # url: 0.0.0.0:8001/simple
     host: "0.0.0.0"
     port: 8001
 
