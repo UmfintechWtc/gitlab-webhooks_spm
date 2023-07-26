@@ -22,7 +22,7 @@ def simple_index():
 	try:
 		return send_from_directory(f'{simple_index_path}', f'{config.client_info.module.simple_index_name}')
 	except Exception as e:
-		xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{str(traceback.format_exc())}')))
+		xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{simple_index_path} - {str(traceback.format_exc())}')))
 		return f'{simple_index_path} Page not found', 404
 
 
@@ -32,7 +32,7 @@ def simple_package_index(package_name):
 	try:
 		return send_from_directory(package_index_file, f'{config.client_info.module.simple_index_name}')
 	except Exception as e:
-		xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{str(traceback.format_exc())}')))
+		xlogger.error(str(WebHooksException(WH_SIMPLE_INDEX, f'{package_index_file} - {str(traceback.format_exc())}')))
 		return f'{package_index_file}/{config.client_info.module.simple_index_name} Page not found', 404
 
 
@@ -42,5 +42,5 @@ def download_file(package_name, filename):
 	try:
 		return send_from_directory(package_directory, filename, as_attachment=True)
 	except Exception as e:
-		xlogger.error(str(WebHooksException(WH_DOWNLOAD_ERROR, f'{str(traceback.format_exc())}')))
+		xlogger.error(str(WebHooksException(WH_DOWNLOAD_ERROR, f'{package_directory}/{filename} - {str(traceback.format_exc())}')))
 		return f'{package_directory}/{filename} module not found', 404
