@@ -20,7 +20,7 @@ class DownloadModule:
 
 	def install_package_cmd(self, package):
 		download_pip_pkg_cmd = f"mppm download -m {package} -o {self.config.client_info.module.package_path}"
-		return exec_cmd(download_pip_pkg_cmd), package
+		return exec_cmd(download_pip_pkg_cmd, True), package
 
 	def install_packages(self):
 		failed_module = []

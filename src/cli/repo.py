@@ -24,7 +24,12 @@ class RepoInit:
 	def update_index(self):
 		pypi_save_path = self.config.client_info.module.package_path
 		update_index_cmd = f"dir2pi {pypi_save_path}"
-		exec_cmd(update_index_cmd)
+		try:
+			exec_cmd(update_index_cmd, False)
+			xlogger.info(f'Update Simple Index Successfully, {pypi_save_path}')
+		except Exception as e:
+			xlogger.error(
+				str(WebHooksException(WH_INDEX_UPDATE, f'{update_index_cmd} - {str(traceback.format_exc())}')))
 
 
 class PyModuleHandler(FileSystemEventHandler):
@@ -59,7 +64,7 @@ class CronTask(RepoInit):
 		except Exception as e:
 			self.create_observer_handler.stop()
 			xlogger.error(
-				str(WebHooksException(WH_INDEX_UPDATE, f'{str(traceback.format_exc())}')))
+				str(WebHooksException(WH_INDEX_UPDATE, f'observer - {str(traceback.format_exc())}')))
 
 		self.create_observer_handler.join()
 

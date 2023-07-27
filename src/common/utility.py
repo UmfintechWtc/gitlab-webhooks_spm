@@ -21,9 +21,12 @@ def print_colored(text, color):
 	print(colored_text)
 
 
-def exec_cmd(cmd):
-	cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-	return cmd_result.stdout.decode("utf8")
+def exec_cmd(cmd, usage: bool):
+	if usage:
+		cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+		return cmd_result.stdout.decode("utf8")
+	else:
+		subprocess.run(cmd, shell=True,check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
 
 def create_dir(dir_name):
