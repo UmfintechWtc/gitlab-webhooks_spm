@@ -1,4 +1,3 @@
-import asyncio
 import time
 import traceback
 
@@ -12,47 +11,53 @@ from src.config.internal_config import InternalConfig
 
 xlogger = get_logger()
 
-
-class PyPIEventHandler(FileSystemEventHandler):
-    def __init__(self, pypi_save_path):
-        self.pypi_save_path = pypi_save_path
-
-    async def on_any_event(self, event):
-        if event.is_directory:
-            return
-
-        update_index_cmd = f"dir2pi {self.pypi_save_path}"
-        process = await asyncio.create_subprocess_shell(update_index_cmd)
-        await process.communicate()
-        xlogger.info(f"{self.pypi_save_path} 已更新[{update_index_cmd}]")
-
-
-
 class RepoInit:
-    def __init__(self):
-        self.event_handler = None
-        self.observer = Observer()
-        self.config = self.internal_config
 
-    @property
-    def internal_config(self):
-        return InternalConfig()
+	def __init__(self):
+		self.config = self.internal_config
 
-    async def update_index(self):
-        pypi_save_path = self.config.client_info.module.package_path
-        self.event_handler = PyPIEventHandler(pypi_save_path)
-        self.observer.schedule(self.event_handler, pypi_save_path, recursive=True)
-        xlogger.info(f"开始监听目录：{pypi_save_path}")
-        try:
-            while True:
-                await asyncio.sleep(1)
-        except Exception as e:
-            xlogger.error(str(WebHooksException(WH_SHELL_ERROR, f'{str(traceback.format_exc())}')))
-        finally:
-            self.observer.stop()
-            self.observer.join()
+	@property
+	def internal_config(self):
+		return InternalConfig()
+
+	def update_index(self):
+		pypi_save_path = self.config.client_info.module.package_path
+		update_index_cmd = f"dir2pi {pypi_save_path}"
+		exec_cmd(update_index_cmd)
 
 
-    async def main(self):
-        repo_init = RepoInit()
-        await repo_init.update_index()
+class PyModuleHandler(FileSystemEventHandler):
+	def __init__(self, repo_init: RepoInit):
+		self.repo_init = repo_init
+
+	def on_created(self, event):
+		if not event.is_directory:
+			self.repo_init.update_index()
+
+
+class CronTask(RepoInit):
+	def __init__(self):
+		super().__init__()
+
+	@property
+	def create_event_handler(self):
+		event_handler = PyModuleHandler(RepoInit())
+		return event_handler
+
+	@property
+	def create_observer_handler(self):
+		observer = Observer()
+		observer.schedule(self.create_event_handler, self.config.client_info.module.package_path, recursive=False)
+		return observer
+
+	def run_scheduler(self):
+		self.create_observer_handler.start()
+		try:
+			while True:
+				time.sleep(1)
+		except Exception as e:
+			self.create_observer_handler.stop()
+			xlogger.error(
+				str(WebHooksException(WH_INDEX_UPDATE, f'{str(traceback.format_exc())}')))
+
+		self.create_observer_handler.join()

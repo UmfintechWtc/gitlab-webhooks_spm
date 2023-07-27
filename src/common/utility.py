@@ -25,6 +25,7 @@ def exec_cmd(cmd):
 	cmd_result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 	return cmd_result.stdout.decode("utf8")
 
+
 def create_dir(dir_name):
 	if os.path.exists(dir_name):
 		pass

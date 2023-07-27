@@ -1,6 +1,8 @@
 import logging
-from src.common.const import *
+
 from colorlog import ColoredFormatter
+
+from src.common.const import *
 
 LOG_LEVEL = logging.DEBUG
 
@@ -19,11 +21,11 @@ consoleHandler.setFormatter(logFormatter)
 rootLogger.addHandler(consoleHandler)
 
 _logger = None
+
+
 def get_logger():
 	global _logger
 	if not _logger:
 		_logger = logging.getLogger()
 		_logger.setLevel(logging.DEBUG)
 	return _logger
-
-

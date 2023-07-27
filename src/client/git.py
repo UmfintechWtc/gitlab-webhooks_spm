@@ -1,6 +1,7 @@
 import base64
+
 import gitlab
-from src.common.const import *
+
 from src.config.internal_config import InternalConfig
 
 

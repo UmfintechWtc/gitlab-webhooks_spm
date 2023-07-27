@@ -11,7 +11,7 @@ config = InternalConfig()
 
 xlogger = get_logger()
 
-asyncio.run(RepoInit().update_index())
+CronTask().create_observer_handler()
 
 
 @app_pkg.route('/simple/')

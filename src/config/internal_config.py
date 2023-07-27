@@ -1,7 +1,9 @@
-import sys
-import yaml
-import traceback
 import collections
+import sys
+import traceback
+
+import yaml
+
 from src.common.exception import *
 from src.common.log4py import *
 from src.common.utility import *
