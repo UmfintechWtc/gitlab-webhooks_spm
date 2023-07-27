@@ -22,8 +22,7 @@ class PyPIEventHandler(FileSystemEventHandler):
 			return
 
 		update_index_cmd = f"dir2pi {self.pypi_save_path}"
-		process = await asyncio.create_subprocess_shell(update_index_cmd)
-		await process.communicate()
+		await asyncio.create_subprocess_shell(update_index_cmd)
 		xlogger.info(f"{self.pypi_save_path} 已更新[{update_index_cmd}]")
 
 
