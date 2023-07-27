@@ -1,8 +1,11 @@
 client_info:
   base_url: python
   module:
+    # module save path
     package_path: "/mnt/pypi"
+    # module meta data
     simple_index_name: "index.html"
+    # read project requirements.txt save to local, (pipeline/requirements.txt)
     pipeline_save: "pipeline"
   webhooks:
     # url: 0.0.0.0:8000/python/pypi
@@ -16,19 +19,22 @@ client_info:
     port: 8001
 
   config:
+    # url:
     url_suffix: "config"
     host: "0.0.0.0"
     port: 8002
 
   gitlab:
-    url: "http://10.2.12.84:8000"
-    # BSyK4ZVZzDK47_MeeFYs
+    url: "http://127.0.0.1:8000"
+    # BSyK4ZVZzDK47_MeeFYs -> base64 -> QlN5SzRaVlp6REs0N19NZWVGWXM=
     sk: "QlN5SzRaVlp6REs0N19NZWVGWXM="
     timeout: 60
+    # parse project filename
     parse_filename: "requirements.txt"
 
   ignore_black_key_words:
     mppm: "ERROR"
 
 performance:
+  # thread
   max_workers: 5

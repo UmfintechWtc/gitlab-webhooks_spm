@@ -2,37 +2,53 @@
 
 #### Description
 
-When a Push Event occurs at any time, the private pypi repository synchronizes the newly added Python module in the
-current project
+When a Push Event occurs at any time, the private pypi repository synchronizes the newly added Python module in the current project
 
 #### Software Architecture
 
-Software architecture description
++ CentOS 7
++ Python >= 3.6
 
-#### Installation
+#### Run Project
+```shell
+python main.py
+      2023-07-27 15:00:58,034  WARNING  |  * Running on all addresses.
+      WARNING: This is a development server. Do not use it in a production deployment.
+      2023-07-27 15:00:58,034  WARNING  |  * Running on all addresses.
+      WARNING: This is a development server. Do not use it in a production deployment.
+      2023-07-27 15:00:58,035  INFO     |  * Running on http://10.2.12.85:8001/ (Press CTRL+C to quit)
+      2023-07-27 15:00:58,035  WARNING  |  * Running on all addresses.
+      WARNING: This is a development server. Do not use it in a production deployment.
+      2023-07-27 15:00:58,035  INFO     |  * Running on http://10.2.12.85:8000/ (Press CTRL+C to quit)
+      2023-07-27 15:00:58,035  INFO     |  * Running on http://10.2.12.85:8002/ (Press CTRL+C to quit)
+```
 
-1. xxxx
-2. xxxx
-3. xxxx
+#### Function Introduction
+#####
++ 8000
+    > The webhooks port synchronizes the modules in the repositories and requirements.txt to the local port. Request the daemon as follows
 
-#### Instructions
+    ```text
+    curl -X POST -H "Content-Type: application/json" -d "@data.json" 0.0.0.0:8000/python/pypi
+    ``` 
 
-1. xxxx
-2. xxxx
-3. xxxx
+#####
++ 8001
+    > Provide PIP private repositories download address, The customer order configuration is as follows
 
-#### Contribution
+    ```text
+    [global]  
+    timeout = 10  
+    index-url = http://0.0.0.0:8001/simple  
+    trusted-host = 0.0.0.0   
+    ```
 
-1. Fork the repository
-2. Create Feat_xxx branch
-3. Commit your code
-4. Create Pull Request
+######
++ 8000
+    > Program testing, outputting configuration information.(./config/internal.yaml)
 
-#### Gitee Feature
+    url: 0.0.0.0:8000/python/pypi 
 
-1. You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2. Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3. Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4. The most valuable open source project [GVP](https://gitee.com/gvp)
-5. The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6. The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### Credits
+
++ [mppm](https://gitee.com/TianCiwang/mppm) for the interactive selection list

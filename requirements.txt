@@ -4,3 +4,4 @@ python-gitlab==2.10.1
 PyYAML==6.0.1
 watchdog==2.3.1
 requests==2.27.1
+mppm==3.0.7
