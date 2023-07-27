@@ -13,3 +13,4 @@ if __name__ == '__main__':
 		pool.submit(app_config.run, host=config.client_info.config.host, port=int(config.client_info.config.port))
 		pool.submit(app_pkg.run, host=config.client_info.repo.host, port=int(config.client_info.repo.port))
 		pool.submit(app_pypi.run, host=config.client_info.webhooks.host, port=int(config.client_info.webhooks.port))
+		create_observer_handler()

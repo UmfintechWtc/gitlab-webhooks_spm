@@ -11,6 +11,7 @@ from src.config.internal_config import InternalConfig
 
 xlogger = get_logger()
 
+
 class RepoInit:
 
 	def __init__(self):
@@ -50,7 +51,7 @@ class CronTask(RepoInit):
 		observer.schedule(self.create_event_handler, self.config.client_info.module.package_path, recursive=False)
 		return observer
 
-	def run_scheduler(self):
+	def observer_scheduler(self):
 		self.create_observer_handler.start()
 		try:
 			while True:
@@ -61,3 +62,8 @@ class CronTask(RepoInit):
 				str(WebHooksException(WH_INDEX_UPDATE, f'{str(traceback.format_exc())}')))
 
 		self.create_observer_handler.join()
+
+
+def create_observer_handler():
+	task = CronTask()
+	return task.observer_scheduler()

@@ -1,6 +1,5 @@
 from flask import Flask, send_from_directory
 
-from src.cli.repo import *
 from src.common.exception import *
 from src.common.log4py import *
 from src.config.internal_config import InternalConfig
@@ -10,9 +9,6 @@ app_pkg = Flask(__name__)
 config = InternalConfig()
 
 xlogger = get_logger()
-
-CronTask().create_observer_handler()
-
 
 @app_pkg.route('/simple/')
 def simple_index():
