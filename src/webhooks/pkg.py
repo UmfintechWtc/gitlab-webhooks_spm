@@ -1,5 +1,3 @@
-import traceback
-
 from flask import Flask, send_from_directory
 
 from src.cli.repo import *
@@ -13,7 +11,7 @@ config = InternalConfig()
 
 xlogger = get_logger()
 
-RepoInit().update_index()
+asyncio.run(RepoInit().update_index())
 
 
 @app_pkg.route('/simple/')
@@ -42,5 +40,6 @@ def download_file(package_name, filename):
 	try:
 		return send_from_directory(package_directory, filename, as_attachment=True)
 	except Exception as e:
-		xlogger.error(str(WebHooksException(WH_DOWNLOAD_ERROR, f'{package_directory}/{filename} - {str(traceback.format_exc())}')))
+		xlogger.error(str(
+			WebHooksException(WH_DOWNLOAD_ERROR, f'{package_directory}/{filename} - {str(traceback.format_exc())}')))
 		return f'{package_directory}/{filename} module not found', 404
